@@ -1,0 +1,21 @@
+static void articulationPoint(int u,int parent){
+        dfsLow[u]=dfsNum[u]=++counter;
+        boolean leaf=tree[u].size()==1;
+        for (int i = 0; i <tree[u].size() ; i++) {
+            int v=tree[u].get(i);
+            if(v!=parent) {
+                if (dfsLow[v] == 0 && dfsNum[v] == 0) {
+                    if (u == root)
+                        rootChildren++;
+                    articulationPoint(v, u);
+                    dfsLow[u] = Math.min(dfsLow[u], dfsLow[v]);
+                    if(dfsLow[v]>=dfsNum[u])
+                        isArticulation[u]=true;
+                } else {
+                    if (dfsNum[v] < dfsLow[u])
+                        dfsLow[u] = dfsNum[v];
+                }
+            }
+        }
+
+    }

@@ -1,0 +1,28 @@
+static void bridge(int u, int parent) {
+        dfsLow[u] = dfsNum[u] = ++counter;
+        for (int i = 0; i < tree[u].size(); i++) {
+            int v = tree[u].get(i);
+            if (v != parent) {
+                if (dfsLow[v] == 0 && dfsNum[v] == 0) {
+                    bridge(v, u);
+                    dfsLow[u] = Math.min(dfsLow[u], dfsLow[v]);
+                    if (dfsLow[v] > dfsNum[u]) {
+                        int x;
+                        int y;
+                        if (u < v) {
+                            x = u;
+                            y = v;
+                        } else {
+                            x = v;
+                            y = u;
+                        }
+                        ans.add(new pair(x, y));
+                    }
+
+                } else {
+                    if (dfsNum[v] < dfsLow[u])
+                        dfsLow[u] = dfsNum[v];
+                }
+            }
+        }
+    }

@@ -1,0 +1,48 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    static int len = (int) (1e5) + 1;
+    static long[] pow = new long[len];
+    static long mod;
+    static  ArrayList<Integer>[]graph;
+    static int[]vis;
+    static int SCCnum,dfsCount;
+    static int[]whichSCC,dfsNum,dfsLow;
+    static Stack<Integer>nodes;
+    static void tarjanSCC(){
+        for (int i = 0; i <vis.length ; i++) {
+            if(vis[i]==0)
+                tarjanSCC(i);
+        }
+    }
+    static void tarjanSCC(int i){
+        dfsNum[i]=dfsLow[i]=dfsCount++;
+        vis[i]=-1;
+        nodes.push(i);
+        for (int j = 0; j <graph[i].size() ; j++) {
+            int v=graph[i].get(j);
+            if(vis[v]==1)
+                continue;
+            if(vis[v]==0){
+                tarjanSCC(v);
+            }
+
+            dfsLow[i]=Math.min(dfsLow[i],dfsLow[v]);
+        }
+        if(dfsLow[i]==dfsNum[i]){
+            while(true){
+                int v=nodes.pop();
+                whichSCC[v]=SCCnum;
+                vis[v]=1;//mark as visited only after returning to the head of the SCC
+                if(v==i)
+                    break;
+            }
+            ++SCCnum;
+        }
+
+    }
+
+
+
+ }

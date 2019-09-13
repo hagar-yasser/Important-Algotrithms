@@ -1,0 +1,60 @@
+ static class pair implements Comparable<pair>{
+        int x;long y;
+        public pair(int x1,long y1){
+            x=x1;y=y1;
+        }
+
+        @Override
+        public int compareTo(pair o) {
+            if(y>o.y)
+                return 1;
+            if(y==o.y)
+                return 0;
+            return -1;
+        }
+    }
+    static class tri implements Comparable<tri>{
+        int u,v;long cost;
+        public tri(int x1,int y1,long c1){
+            u=x1;v=y1;cost=c1;
+        }
+
+        @Override
+        public int compareTo(tri o) {
+           return (cost>o.cost)?1:cost<o.cost?-1:0;
+        }
+    }
+
+    static int len = (int) (1e5) + 1;
+    static long[] pow = new long[len];
+    static long mod;
+    static ArrayList<tri>[] graph;
+    static ArrayList<pair>[]MST;
+    static int[] vis;
+    static int SCCnum, dfsCount;
+    static int[] whichSCC, dfsNum, dfsLow;
+    static Stack<Integer> nodes;
+    static PriorityQueue<tri>pq;
+    static long MSTcost;
+    static void PrimMST(){
+        vis[0]=1;
+        for (int i = 0; i <graph[0].size() ; i++) {
+            pq.add(graph[0].get(i));
+        }
+
+        while(!pq.isEmpty()) {
+            tri cur = pq.poll();
+            if (vis[cur.v] == 0) {
+                vis[cur.v]=1;
+                for (int i = 0; i <graph[cur.v].size() ; i++) {
+                    if(vis[graph[cur.v].get(i).v]==0)
+                    pq.add(graph[cur.v].get(i));
+                }
+                MST[cur.u].add(new pair(cur.v,cur.cost));
+                MST[cur.v].add(new pair(cur.u,cur.cost));
+                MSTcost+=cur.cost;
+            }
+        }
+    }
+
+}
